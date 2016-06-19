@@ -2,9 +2,9 @@ package geojson
 
 type Feature struct {
 	GeoJSON
-	Id         interface{} `json:"id,omitempty"`
-	Geometry   *Geometry   `json:"geometry"`
-	Properties interface{} `json:"properties"`
+	Id         interface{}            `json:"id,omitempty"`
+	Geometry   *Geometry              `json:"geometry"`
+	Properties map[string]interface{} `json:"properties"`
 }
 
 type FeatureCollection struct {
