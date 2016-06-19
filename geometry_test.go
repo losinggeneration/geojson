@@ -9,7 +9,7 @@ func TestSetGeometry(t *testing.T) {
 	// Success for type Point
 	g := Geometry{
 		rawGeometry: rawGeometry{
-			GeoJSON: GeoJSON{
+			Object: Object{
 				Type: "Point",
 			},
 			Coordinates: json.RawMessage(`[1.0, 10]`),
@@ -22,7 +22,7 @@ func TestSetGeometry(t *testing.T) {
 	// Success for type MultiPoint
 	g = Geometry{
 		rawGeometry: rawGeometry{
-			GeoJSON: GeoJSON{
+			Object: Object{
 				Type: "MultiPoint",
 			},
 			Coordinates: json.RawMessage(`[[1.0, 10], [10, 1.0]]`),
@@ -35,7 +35,7 @@ func TestSetGeometry(t *testing.T) {
 	// Success for type LineString
 	g = Geometry{
 		rawGeometry: rawGeometry{
-			GeoJSON: GeoJSON{
+			Object: Object{
 				Type: "LineString",
 			},
 			Coordinates: json.RawMessage(`[[1.0, 10], [10, 1.0]]`),
@@ -48,7 +48,7 @@ func TestSetGeometry(t *testing.T) {
 	// Success for type MultiLineString
 	g = Geometry{
 		rawGeometry: rawGeometry{
-			GeoJSON: GeoJSON{
+			Object: Object{
 				Type: "MultiLineString",
 			},
 			Coordinates: json.RawMessage(`[
@@ -64,7 +64,7 @@ func TestSetGeometry(t *testing.T) {
 	// Success for type Polygon
 	g = Geometry{
 		rawGeometry: rawGeometry{
-			GeoJSON: GeoJSON{
+			Object: Object{
 				Type: "Polygon",
 			},
 			Coordinates: json.RawMessage(`[[
@@ -81,7 +81,7 @@ func TestSetGeometry(t *testing.T) {
 	// Success for type MultiPolygon
 	g = Geometry{
 		rawGeometry: rawGeometry{
-			GeoJSON: GeoJSON{
+			Object: Object{
 				Type: "MultiPolygon",
 			},
 			Coordinates: json.RawMessage(`[
@@ -98,7 +98,7 @@ func TestSetGeometry(t *testing.T) {
 	// Success for type GeometryCollection
 	g = Geometry{
 		rawGeometry: rawGeometry{
-			GeoJSON: GeoJSON{
+			Object: Object{
 				Type: "GeometryCollection",
 			},
 			Geometries: json.RawMessage(`[{
@@ -117,7 +117,7 @@ func TestSetGeometry(t *testing.T) {
 	// Fail on other types
 	g = Geometry{
 		rawGeometry: rawGeometry{
-			GeoJSON: GeoJSON{
+			Object: Object{
 				Type: "geom",
 			},
 			Geometries: json.RawMessage(`{}`),
@@ -338,7 +338,7 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 	// Success on type Point
 	expected := Geometry{
 		rawGeometry: rawGeometry{
-			GeoJSON: GeoJSON{
+			Object: Object{
 				Type: "Point",
 			},
 		},
@@ -357,7 +357,7 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 	// Success on type MultiPoint
 	expected = Geometry{
 		rawGeometry: rawGeometry{
-			GeoJSON: GeoJSON{
+			Object: Object{
 				Type: "MultiPoint",
 			},
 		},
@@ -376,7 +376,7 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 	// Success on type LineString
 	expected = Geometry{
 		rawGeometry: rawGeometry{
-			GeoJSON: GeoJSON{
+			Object: Object{
 				Type: "LineString",
 			},
 		},
@@ -395,7 +395,7 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 	// Success on type MultiLineString
 	expected = Geometry{
 		rawGeometry: rawGeometry{
-			GeoJSON: GeoJSON{
+			Object: Object{
 				Type: "MultiLineString",
 			},
 		},
@@ -417,7 +417,7 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 	// Success on type Polygon
 	expected = Geometry{
 		rawGeometry: rawGeometry{
-			GeoJSON: GeoJSON{
+			Object: Object{
 				Type: "Polygon",
 			},
 		},
@@ -439,7 +439,7 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 	// Success on type MultiPolygon
 	expected = Geometry{
 		rawGeometry: rawGeometry{
-			GeoJSON: GeoJSON{
+			Object: Object{
 				Type: "MultiPolygon",
 			},
 		},
@@ -470,7 +470,7 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 	// Success on type GeometryCollection
 	expected = Geometry{
 		rawGeometry: rawGeometry{
-			GeoJSON: GeoJSON{
+			Object: Object{
 				Type: "GeometryCollection",
 			},
 		},

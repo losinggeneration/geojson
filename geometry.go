@@ -15,42 +15,42 @@ type Coordinate []float64
 type Coordinates []Coordinate
 
 type Point struct {
-	GeoJSON
+	Object
 	Coordinates Coordinate `json:"coordinates"`
 }
 
 type MultiPoint struct {
-	GeoJSON
+	Object
 	Coordinates Coordinates `json:"coordinates"`
 }
 
 type LineString struct {
-	GeoJSON
+	Object
 	Coordinates Coordinates `json:"coordinates"`
 }
 
 type MultiLineString struct {
-	GeoJSON
+	Object
 	Coordinates []Coordinates `json:"coordinates"`
 }
 
 type Polygon struct {
-	GeoJSON
+	Object
 	Coordinates []Coordinates `json:"coordinates"`
 }
 
 type MultiPolygon struct {
-	GeoJSON
+	Object
 	Coordinates [][]Coordinates `json:"coordinates"`
 }
 
 type GeometryCollection struct {
-	GeoJSON
+	Object
 	Geometries []Geometry `json:"geometries"`
 }
 
 type rawGeometry struct {
-	GeoJSON
+	Object
 	Coordinates json.RawMessage `json:"coordinates"`
 	Geometries  json.RawMessage `json:"geometries"`
 }
@@ -72,25 +72,25 @@ func (g *Geometry) setGeometry() error {
 
 	switch g.Type {
 	case "Point":
-		g.Point = &Point{GeoJSON: g.GeoJSON}
+		g.Point = &Point{Object: g.Object}
 		d, r = &g.Point.Coordinates, g.Coordinates
 	case "MultiPoint":
-		g.MultiPoint = &MultiPoint{GeoJSON: g.GeoJSON}
+		g.MultiPoint = &MultiPoint{Object: g.Object}
 		d, r = &g.MultiPoint.Coordinates, g.Coordinates
 	case "LineString":
-		g.LineString = &LineString{GeoJSON: g.GeoJSON}
+		g.LineString = &LineString{Object: g.Object}
 		d, r = &g.LineString.Coordinates, g.Coordinates
 	case "MultiLineString":
-		g.MultiLineString = &MultiLineString{GeoJSON: g.GeoJSON}
+		g.MultiLineString = &MultiLineString{Object: g.Object}
 		d, r = &g.MultiLineString.Coordinates, g.Coordinates
 	case "Polygon":
-		g.Polygon = &Polygon{GeoJSON: g.GeoJSON}
+		g.Polygon = &Polygon{Object: g.Object}
 		d, r = &g.Polygon.Coordinates, g.Coordinates
 	case "MultiPolygon":
-		g.MultiPolygon = &MultiPolygon{GeoJSON: g.GeoJSON}
+		g.MultiPolygon = &MultiPolygon{Object: g.Object}
 		d, r = &g.MultiPolygon.Coordinates, g.Coordinates
 	case "GeometryCollection":
-		g.GeometryCollection = &GeometryCollection{GeoJSON: g.GeoJSON}
+		g.GeometryCollection = &GeometryCollection{Object: g.Object}
 		d, r = &g.GeometryCollection.Geometries, g.Geometries
 	default:
 		return ErrInvalidGeometry
@@ -101,7 +101,7 @@ func (g *Geometry) setGeometry() error {
 
 func (g Geometry) MarshalJSON() ([]byte, error) {
 	type geometry struct {
-		GeoJSON
+		Object
 		Coordinates interface{} `json:"coordinates,omitempty"`
 		Geometries  interface{} `json:"geometries,omitempty"`
 	}
@@ -111,37 +111,37 @@ func (g Geometry) MarshalJSON() ([]byte, error) {
 
 	if g.Point != nil {
 		g.Type = "Point"
-		j = geometry{GeoJSON: g.GeoJSON, Coordinates: g.Point.Coordinates}
+		j = geometry{Object: g.Object, Coordinates: g.Point.Coordinates}
 		i++
 	}
 	if g.MultiPoint != nil {
 		g.Type = "MultiPoint"
-		j = geometry{GeoJSON: g.GeoJSON, Coordinates: g.MultiPoint.Coordinates}
+		j = geometry{Object: g.Object, Coordinates: g.MultiPoint.Coordinates}
 		i++
 	}
 	if g.LineString != nil {
 		g.Type = "LineString"
-		j = geometry{GeoJSON: g.GeoJSON, Coordinates: g.LineString.Coordinates}
+		j = geometry{Object: g.Object, Coordinates: g.LineString.Coordinates}
 		i++
 	}
 	if g.MultiLineString != nil {
 		g.Type = "MultiLineString"
-		j = geometry{GeoJSON: g.GeoJSON, Coordinates: g.MultiLineString.Coordinates}
+		j = geometry{Object: g.Object, Coordinates: g.MultiLineString.Coordinates}
 		i++
 	}
 	if g.Polygon != nil {
 		g.Type = "Polygon"
-		j = geometry{GeoJSON: g.GeoJSON, Coordinates: g.Polygon.Coordinates}
+		j = geometry{Object: g.Object, Coordinates: g.Polygon.Coordinates}
 		i++
 	}
 	if g.MultiPolygon != nil {
 		g.Type = "MultiPolygon"
-		j = geometry{GeoJSON: g.GeoJSON, Coordinates: g.MultiPolygon.Coordinates}
+		j = geometry{Object: g.Object, Coordinates: g.MultiPolygon.Coordinates}
 		i++
 	}
 	if g.GeometryCollection != nil {
 		g.Type = "GeometryCollection"
-		j = geometry{GeoJSON: g.GeoJSON, Geometries: g.GeometryCollection.Geometries}
+		j = geometry{Object: g.Object, Geometries: g.GeometryCollection.Geometries}
 		i++
 	}
 

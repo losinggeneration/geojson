@@ -1,13 +1,13 @@
 package geojson
 
 type Feature struct {
-	GeoJSON
+	Object
 	Id         interface{}            `json:"id,omitempty"`
 	Geometry   *Geometry              `json:"geometry"`
 	Properties map[string]interface{} `json:"properties"`
 }
 
 type FeatureCollection struct {
-	GeoJSON
+	Object
 	Features []Feature `json:"features"`
 }
