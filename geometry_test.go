@@ -5,6 +5,63 @@ import (
 	"testing"
 )
 
+// TODO this doesn't compare closely enough
+func equalGeometries(g1, g2 *Geometry, t *testing.T) {
+	if g1 == nil && g2 == nil {
+		return
+	} else if g1 != nil && g2 == nil {
+		t.Errorf("expected Geometry %v but got nil", g1)
+	} else if g1 == nil && g2 != nil {
+		t.Errorf("expected Geometry nil but got %v", g2)
+	}
+
+	if g1.Type != g2.Type {
+		t.Errorf("expected Type %q but got %q", g1.Type, g2.Type)
+	}
+
+	if g1.Point != nil && g2.Point == nil {
+		t.Errorf("expected Point %v but got nil", g1.Point)
+	} else if g1.Point == nil && g2.Point != nil {
+		t.Errorf("expected Point nil but got %v", g2.Point)
+	}
+
+	if g1.MultiPoint != nil && g2.MultiPoint == nil {
+		t.Errorf("expected MultiPoint %v but got nil", g1.MultiPoint)
+	} else if g1.MultiPoint == nil && g2.MultiPoint != nil {
+		t.Errorf("expected MultiPoint nil but got %v", g2.MultiPoint)
+	}
+
+	if g1.LineString != nil && g2.LineString == nil {
+		t.Errorf("expected LineString %v but got nil", g1.LineString)
+	} else if g1.LineString == nil && g2.LineString != nil {
+		t.Errorf("expected LineString nil but got %v", g2.LineString)
+	}
+
+	if g1.MultiLineString != nil && g2.MultiLineString == nil {
+		t.Errorf("expected MultiLineString %v but got nil", g1.MultiLineString)
+	} else if g1.MultiLineString == nil && g2.MultiLineString != nil {
+		t.Errorf("expected MultiLineString nil but got %v", g2.MultiLineString)
+	}
+
+	if g1.Polygon != nil && g2.Polygon == nil {
+		t.Errorf("expected Polygon %v but got nil", g1.Polygon)
+	} else if g1.Polygon == nil && g2.Polygon != nil {
+		t.Errorf("expected Polygon nil but got %v", g2.Polygon)
+	}
+
+	if g1.MultiPolygon != nil && g2.MultiPolygon == nil {
+		t.Errorf("expected MultiPolygon %v but got nil", g1.MultiPolygon)
+	} else if g1.MultiPolygon == nil && g2.MultiPolygon != nil {
+		t.Errorf("expected MultiPolygon nil but got %v", g2.MultiPolygon)
+	}
+
+	if g1.GeometryCollection != nil && g2.GeometryCollection == nil {
+		t.Errorf("expected GeometryCollection %v but got nil", g1.GeometryCollection)
+	} else if g1.GeometryCollection == nil && g2.GeometryCollection != nil {
+		t.Errorf("expected GeometryCollection nil but got %v", g2.GeometryCollection)
+	}
+}
+
 func TestSetGeometry(t *testing.T) {
 	// Success for type Point
 	g := Geometry{
@@ -286,54 +343,6 @@ func TestGeometryMarshalJSON(t *testing.T) {
 }
 
 func TestGeometryUnmarshalJSOR(t *testing.T) {
-	// TODO this doesn't compare closely enough
-	equalGeometries := func(g1, g2 Geometry) {
-		if g1.Type != g2.Type {
-			t.Errorf("expected Type %q but got %q", g1.Type, g2.Type)
-		}
-
-		if g1.Point != nil && g2.Point == nil {
-			t.Errorf("expected Point %v but got nit", g1.Point)
-		} else if g1.Point == nil && g2.Point != nil {
-			t.Errorf("expected Point nil but got %v", g2.Point)
-		}
-
-		if g1.MultiPoint != nil && g2.MultiPoint == nil {
-			t.Errorf("expected MultiPoint %v but got nil", g1.MultiPoint)
-		} else if g1.MultiPoint == nil && g2.MultiPoint != nil {
-			t.Errorf("expected MultiPoint nil but got %v", g2.MultiPoint)
-		}
-
-		if g1.LineString != nil && g2.LineString == nil {
-			t.Errorf("expected LineString %v but got nit", g1.LineString)
-		} else if g1.LineString == nil && g2.LineString != nil {
-			t.Errorf("expected LineString nil but got %v", g2.LineString)
-		}
-
-		if g1.MultiLineString != nil && g2.MultiLineString == nil {
-			t.Errorf("expected MultiLineString %v but got nil", g1.MultiLineString)
-		} else if g1.MultiLineString == nil && g2.MultiLineString != nil {
-			t.Errorf("expected MultiLineString nil but got %v", g2.MultiLineString)
-		}
-
-		if g1.Polygon != nil && g2.Polygon == nil {
-			t.Errorf("expected Polygon %v but got nit", g1.Polygon)
-		} else if g1.Polygon == nil && g2.Polygon != nil {
-			t.Errorf("expected Polygon nil but got %v", g2.Polygon)
-		}
-
-		if g1.MultiPolygon != nil && g2.MultiPolygon == nil {
-			t.Errorf("expected MultiPolygon %v but got nil", g1.MultiPolygon)
-		} else if g1.MultiPolygon == nil && g2.MultiPolygon != nil {
-			t.Errorf("expected MultiPolygon nil but got %v", g2.MultiPolygon)
-		}
-
-		if g1.GeometryCollection != nil && g2.GeometryCollection == nil {
-			t.Errorf("expected GeometryCollection %v but got nit", g1.GeometryCollection)
-		} else if g1.GeometryCollection == nil && g2.GeometryCollection != nil {
-			t.Errorf("expected GeometryCollection nil but got %v", g2.GeometryCollection)
-		}
-	}
 
 	// Success on type Point
 	expected := Geometry{
@@ -351,7 +360,7 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 	if err := g.UnmarshalJSON(b); err != nil {
 		t.Errorf("expected nil but got '%v'", err)
 	} else {
-		equalGeometries(expected, g)
+		equalGeometries(&expected, &g, t)
 	}
 
 	// Success on type MultiPoint
@@ -370,7 +379,7 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 	if err := g.UnmarshalJSON(b); err != nil {
 		t.Errorf("expected nil but got '%v'", err)
 	} else {
-		equalGeometries(expected, g)
+		equalGeometries(&expected, &g, t)
 	}
 
 	// Success on type LineString
@@ -389,7 +398,7 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 	if err := g.UnmarshalJSON(b); err != nil {
 		t.Errorf("expected nil but got '%v'", err)
 	} else {
-		equalGeometries(expected, g)
+		equalGeometries(&expected, &g, t)
 	}
 
 	// Success on type MultiLineString
@@ -411,7 +420,7 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 	if err := g.UnmarshalJSON(b); err != nil {
 		t.Errorf("expected nil but got '%v'", err)
 	} else {
-		equalGeometries(expected, g)
+		equalGeometries(&expected, &g, t)
 	}
 
 	// Success on type Polygon
@@ -433,7 +442,7 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 	if err := g.UnmarshalJSON(b); err != nil {
 		t.Errorf("expected nil but got '%v'", err)
 	} else {
-		equalGeometries(expected, g)
+		equalGeometries(&expected, &g, t)
 	}
 
 	// Success on type MultiPolygon
@@ -464,7 +473,7 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 	if err := g.UnmarshalJSON(b); err != nil {
 		t.Errorf("expected nil but got '%v'", err)
 	} else {
-		equalGeometries(expected, g)
+		equalGeometries(&expected, &g, t)
 	}
 
 	// Success on type GeometryCollection
@@ -506,7 +515,7 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 	if err := g.UnmarshalJSON(b); err != nil {
 		t.Errorf("expected nil but got '%v'", err)
 	} else {
-		equalGeometries(expected, g)
+		equalGeometries(&expected, &g, t)
 	}
 
 	// Fail on invalid JSON
