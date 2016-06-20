@@ -305,14 +305,14 @@ func TestUnmarshalRealGeoJSON(t *testing.T) {
 	}
 }
 
-func TestGeoJSONSpecExample(t *testing.T) {
-	j := []byte(r.ReplaceAllString(`{
+func TestGeoJSONSpecExampleMarshal(t *testing.T) {
+	expected := []byte(r.ReplaceAllString(`{
 		"type": "FeatureCollection",
 		"features": [{
 			"type": "Feature",
 			"geometry": {
 				"type": "Point",
-				"coordinates": [102.0, 0.5]
+				"coordinates": [102, 0.5]
 			},
 			"properties": {
 				"prop0": "value0"
@@ -322,15 +322,15 @@ func TestGeoJSONSpecExample(t *testing.T) {
 			"geometry": {
 				"type": "LineString",
 				"coordinates": [
-					[102.0, 0.0],
-					[103.0, 1.0],
-					[104.0, 0.0],
-					[105.0, 1.0]
+					[102, 0],
+					[103, 1],
+					[104, 0],
+					[105, 1]
 				]
 			},
 			"properties": {
 				"prop0": "value0",
-				"prop1": 0.0
+				"prop1": 0
 			}
 		}, {
 			"type": "Feature",
@@ -338,11 +338,117 @@ func TestGeoJSONSpecExample(t *testing.T) {
 				"type": "Polygon",
 				"coordinates": [
 					[
-						[100.0, 0.0],
-						[101.0, 0.0],
-						[101.0, 1.0],
-						[100.0, 1.0],
-						[100.0, 0.0]
+						[100, 0],
+						[101, 0],
+						[101, 1],
+						[100, 1],
+						[100, 0]
+					]
+				]
+			},
+			"properties": {
+				"prop0": "value0",
+				"prop1": {
+					"this": "that"
+				}
+			}
+		}]
+	  }`, ""))
+
+	g := GeoJSON{
+		FeatureCollection: &FeatureCollection{
+			Features: []Feature{{
+				Geometry: &Geometry{
+					Point: &Point{
+						Coordinates: Coordinate{102, 0.5},
+					},
+				},
+				Properties: Properties{
+					"prop0": "value0",
+				},
+			}, {
+				Geometry: &Geometry{
+					LineString: &LineString{
+						Coordinates: Coordinates{
+							{102.0, 0.0},
+							{103.0, 1.0},
+							{104.0, 0.0},
+							{105.0, 1.0},
+						},
+					},
+				},
+				Properties: Properties{
+					"prop0": "value0",
+					"prop1": 0.0,
+				},
+			}, {
+				Geometry: &Geometry{
+					Polygon: &Polygon{
+						Coordinates: []Coordinates{{
+							{100.0, 0.0},
+							{101.0, 0.0},
+							{101.0, 1.0},
+							{100.0, 1.0},
+							{100.0, 0.0},
+						}},
+					},
+				},
+				Properties: Properties{
+					"prop0": "value0",
+					"prop1": map[string]interface{}{
+						"this": "that",
+					},
+				},
+			}},
+		},
+	}
+
+	actual, err := json.Marshal(g)
+	if err != nil {
+		t.Errorf("expected nil but got %q", err)
+	} else if b := r.ReplaceAllString(string(actual), ""); string(expected) != b {
+		t.Errorf("expected '%v' but got '%v'", string(expected), b)
+	}
+}
+
+func TestGeoJSONSpecExampleUnmashal(t *testing.T) {
+	j := []byte(r.ReplaceAllString(`{
+		"type": "FeatureCollection",
+		"features": [{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [102, 0.5]
+			},
+			"properties": {
+				"prop0": "value0"
+			}
+		}, {
+			"type": "Feature",
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+					[102, 0],
+					[103, 1],
+					[104, 0],
+					[105, 1]
+				]
+			},
+			"properties": {
+				"prop0": "value0",
+				"prop1": 0
+			}
+		}, {
+			"type": "Feature",
+			"geometry": {
+				"type": "Polygon",
+				"coordinates": [
+					[
+						[100, 0],
+						[101, 0],
+						[101, 1],
+						[100, 1],
+						[100, 0]
 					]
 				]
 			},
@@ -442,5 +548,42 @@ func TestGeoJSONSpecExample(t *testing.T) {
 	} else {
 		equalGeoJSON(expected, g, t)
 	}
+}
 
+func TestThereAndBackAgain(t *testing.T) {
+	j := []byte(r.ReplaceAllString(`{
+			"type": "FeatureCollection",
+			"features": [{
+				"type": "Feature",
+				"geometry": {
+					"type": "Point",
+					"coordinates": [125.6, 10.1]
+				},
+				"properties": {
+					"name": "DinagatIslands"
+				}
+			}]
+		}`, ""))
+	there := GeoJSON{}
+	if err := json.Unmarshal(j, &there); err != nil {
+		t.Errorf("expected nil but got %q", err)
+		return
+	}
+
+	back, err := json.Marshal(there)
+	if err != nil {
+		t.Errorf("expected nil but got %q", err)
+		return
+	} else if b := r.ReplaceAllString(string(back), ""); string(j) != b {
+		t.Errorf("expected '%v' but got '%v'", string(j), b)
+		return
+	}
+
+	again := GeoJSON{}
+	if err := json.Unmarshal(back, &again); err != nil {
+		t.Errorf("expected nil but got %q", err)
+		return
+	}
+
+	equalGeoJSON(there, again, t)
 }
