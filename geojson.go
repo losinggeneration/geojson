@@ -44,6 +44,8 @@ func (g *GeoJSON) UnmarshalJSON(b []byte) error {
 		return err
 	}
 
+	g.Type = t.Type
+
 	switch t.Type {
 	case "Point", "MultiPoint",
 		"LineString", "MultiLineString",
@@ -55,8 +57,8 @@ func (g *GeoJSON) UnmarshalJSON(b []byte) error {
 		g.Feature = new(Feature)
 		return json.Unmarshal(b, g.Feature)
 	case "FeatureCollection":
-		g.Feature = new(Feature)
-		return json.Unmarshal(b, g.Feature)
+		g.FeatureCollection = new(FeatureCollection)
+		return json.Unmarshal(b, g.FeatureCollection)
 	}
 
 	return ErrInvalidGeoJSON
