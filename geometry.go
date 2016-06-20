@@ -56,6 +56,7 @@ type rawGeometry struct {
 }
 
 type Geometry struct {
+	Object
 	rawGeometry
 	Point              *Point              `json:",omitempty"`
 	MultiPoint         *MultiPoint         `json:",omitempty"`
@@ -163,6 +164,7 @@ func (g *Geometry) UnmarshalJSON(b []byte) error {
 		return err
 	}
 
+	g.Object = r.Object
 	g.rawGeometry = r
 
 	return g.setGeometry()

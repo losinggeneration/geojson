@@ -65,10 +65,10 @@ func equalGeometries(g1, g2 *Geometry, t *testing.T) {
 func TestSetGeometry(t *testing.T) {
 	// Success for type Point
 	g := Geometry{
+		Object: Object{
+			Type: "Point",
+		},
 		rawGeometry: rawGeometry{
-			Object: Object{
-				Type: "Point",
-			},
 			Coordinates: json.RawMessage(`[1.0, 10]`),
 		},
 	}
@@ -78,10 +78,10 @@ func TestSetGeometry(t *testing.T) {
 
 	// Success for type MultiPoint
 	g = Geometry{
+		Object: Object{
+			Type: "MultiPoint",
+		},
 		rawGeometry: rawGeometry{
-			Object: Object{
-				Type: "MultiPoint",
-			},
 			Coordinates: json.RawMessage(`[[1.0, 10], [10, 1.0]]`),
 		},
 	}
@@ -91,10 +91,10 @@ func TestSetGeometry(t *testing.T) {
 
 	// Success for type LineString
 	g = Geometry{
+		Object: Object{
+			Type: "LineString",
+		},
 		rawGeometry: rawGeometry{
-			Object: Object{
-				Type: "LineString",
-			},
 			Coordinates: json.RawMessage(`[[1.0, 10], [10, 1.0]]`),
 		},
 	}
@@ -104,10 +104,10 @@ func TestSetGeometry(t *testing.T) {
 
 	// Success for type MultiLineString
 	g = Geometry{
+		Object: Object{
+			Type: "MultiLineString",
+		},
 		rawGeometry: rawGeometry{
-			Object: Object{
-				Type: "MultiLineString",
-			},
 			Coordinates: json.RawMessage(`[
 				[[1.0, 10], [10, 1.0]],
 				[[2.0, 20], [20, 2.0]]
@@ -120,10 +120,10 @@ func TestSetGeometry(t *testing.T) {
 
 	// Success for type Polygon
 	g = Geometry{
+		Object: Object{
+			Type: "Polygon",
+		},
 		rawGeometry: rawGeometry{
-			Object: Object{
-				Type: "Polygon",
-			},
 			Coordinates: json.RawMessage(`[[
 				[100.0, 0.0], [101.0, 0.0], 
 				[101.0, 1.0], [100.0, 1.0],
@@ -137,10 +137,10 @@ func TestSetGeometry(t *testing.T) {
 
 	// Success for type MultiPolygon
 	g = Geometry{
+		Object: Object{
+			Type: "MultiPolygon",
+		},
 		rawGeometry: rawGeometry{
-			Object: Object{
-				Type: "MultiPolygon",
-			},
 			Coordinates: json.RawMessage(`[
 				[[[102.0, 2.0], [103.0, 2.0], [103.0, 3.0], [102.0, 3.0], [102.0, 2.0]]],
 				[[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]],
@@ -154,10 +154,10 @@ func TestSetGeometry(t *testing.T) {
 
 	// Success for type GeometryCollection
 	g = Geometry{
+		Object: Object{
+			Type: "GeometryCollection",
+		},
 		rawGeometry: rawGeometry{
-			Object: Object{
-				Type: "GeometryCollection",
-			},
 			Geometries: json.RawMessage(`[{
 					"type": "Point",
 					"coordinates": [100.0, 0.0]
@@ -173,10 +173,10 @@ func TestSetGeometry(t *testing.T) {
 
 	// Fail on other types
 	g = Geometry{
+		Object: Object{
+			Type: "geom",
+		},
 		rawGeometry: rawGeometry{
-			Object: Object{
-				Type: "geom",
-			},
 			Geometries: json.RawMessage(`{}`),
 		},
 	}
@@ -343,13 +343,10 @@ func TestGeometryMarshalJSON(t *testing.T) {
 }
 
 func TestGeometryUnmarshalJSOR(t *testing.T) {
-
 	// Success on type Point
 	expected := Geometry{
-		rawGeometry: rawGeometry{
-			Object: Object{
-				Type: "Point",
-			},
+		Object: Object{
+			Type: "Point",
 		},
 		Point: &Point{
 			Coordinates: Coordinate{1.1, 10},
@@ -365,10 +362,8 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 
 	// Success on type MultiPoint
 	expected = Geometry{
-		rawGeometry: rawGeometry{
-			Object: Object{
-				Type: "MultiPoint",
-			},
+		Object: Object{
+			Type: "MultiPoint",
 		},
 		MultiPoint: &MultiPoint{
 			Coordinates: Coordinates{{1.1, 10}, {2.2, 20}},
@@ -384,10 +379,8 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 
 	// Success on type LineString
 	expected = Geometry{
-		rawGeometry: rawGeometry{
-			Object: Object{
-				Type: "LineString",
-			},
+		Object: Object{
+			Type: "LineString",
 		},
 		LineString: &LineString{
 			Coordinates: Coordinates{{1.1, 10}, {2.2, 20}},
@@ -403,10 +396,8 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 
 	// Success on type MultiLineString
 	expected = Geometry{
-		rawGeometry: rawGeometry{
-			Object: Object{
-				Type: "MultiLineString",
-			},
+		Object: Object{
+			Type: "MultiLineString",
 		},
 		MultiLineString: &MultiLineString{
 			Coordinates: []Coordinates{
@@ -425,10 +416,8 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 
 	// Success on type Polygon
 	expected = Geometry{
-		rawGeometry: rawGeometry{
-			Object: Object{
-				Type: "Polygon",
-			},
+		Object: Object{
+			Type: "Polygon",
 		},
 		Polygon: &Polygon{
 			Coordinates: []Coordinates{
@@ -447,10 +436,8 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 
 	// Success on type MultiPolygon
 	expected = Geometry{
-		rawGeometry: rawGeometry{
-			Object: Object{
-				Type: "MultiPolygon",
-			},
+		Object: Object{
+			Type: "MultiPolygon",
 		},
 		MultiPolygon: &MultiPolygon{
 			Coordinates: [][]Coordinates{
@@ -478,10 +465,8 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 
 	// Success on type GeometryCollection
 	expected = Geometry{
-		rawGeometry: rawGeometry{
-			Object: Object{
-				Type: "GeometryCollection",
-			},
+		Object: Object{
+			Type: "GeometryCollection",
 		},
 		GeometryCollection: &GeometryCollection{
 			Geometries: []Geometry{
