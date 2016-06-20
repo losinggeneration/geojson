@@ -304,3 +304,143 @@ func TestUnmarshalRealGeoJSON(t *testing.T) {
 		t.Errorf("expected '%v' but got '%v'", ErrInvalidGeoJSON, err)
 	}
 }
+
+func TestGeoJSONSpecExample(t *testing.T) {
+	j := []byte(r.ReplaceAllString(`{
+		"type": "FeatureCollection",
+		"features": [{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [102.0, 0.5]
+			},
+			"properties": {
+				"prop0": "value0"
+			}
+		}, {
+			"type": "Feature",
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+					[102.0, 0.0],
+					[103.0, 1.0],
+					[104.0, 0.0],
+					[105.0, 1.0]
+				]
+			},
+			"properties": {
+				"prop0": "value0",
+				"prop1": 0.0
+			}
+		}, {
+			"type": "Feature",
+			"geometry": {
+				"type": "Polygon",
+				"coordinates": [
+					[
+						[100.0, 0.0],
+						[101.0, 0.0],
+						[101.0, 1.0],
+						[100.0, 1.0],
+						[100.0, 0.0]
+					]
+				]
+			},
+			"properties": {
+				"prop0": "value0",
+				"prop1": {
+					"this": "that"
+				}
+			}
+		}]
+	  }`, ""))
+
+	expected := GeoJSON{
+		Object: Object{
+			Type: "FeatureCollection",
+		},
+		FeatureCollection: &FeatureCollection{
+			Object: Object{
+				Type: "FeatureCollection",
+			},
+			Features: []Feature{{
+				Object: Object{
+					Type: "Feature",
+				},
+				Geometry: &Geometry{
+					Object: Object{
+						Type: "Point",
+					},
+					Point: &Point{
+						Object: Object{
+							Type: "Point",
+						},
+						Coordinates: Coordinate{102, 0.5},
+					},
+				},
+				Properties: Properties{
+					"prop0": "value0",
+				},
+			}, {
+				Object: Object{
+					Type: "LineString",
+				},
+				Geometry: &Geometry{
+					Object: Object{
+						Type: "LineString",
+					},
+					LineString: &LineString{
+						Object: Object{
+							Type: "LineString",
+						},
+						Coordinates: Coordinates{
+							{102.0, 0.0},
+							{103.0, 1.0},
+							{104.0, 0.0},
+							{105.0, 1.0},
+						},
+					},
+				},
+				Properties: Properties{
+					"prop0": "value0",
+					"prop1": 0.0,
+				},
+			}, {
+				Object: Object{
+					Type: "Polygon",
+				},
+				Geometry: &Geometry{
+					Object: Object{
+						Type: "Polygon",
+					},
+					Polygon: &Polygon{
+						Object: Object{
+							Type: "Polygon",
+						},
+						Coordinates: []Coordinates{{
+							{100.0, 0.0},
+							{101.0, 0.0},
+							{101.0, 1.0},
+							{100.0, 1.0},
+							{100.0, 0.0},
+						}},
+					},
+				},
+				Properties: Properties{
+					"prop0": "value0",
+					"prop1": map[string]interface{}{
+						"this": "that",
+					},
+				},
+			}},
+		},
+	}
+
+	g := GeoJSON{}
+	if err := json.Unmarshal(j, &g); err != nil {
+		t.Errorf("expected nil but got %q", err)
+	} else {
+		equalGeoJSON(expected, g, t)
+	}
+
+}
