@@ -6,7 +6,6 @@ import (
 	"testing"
 )
 
-// TODO this doesn't compare closely enough
 func equalGeometries(g1, g2 *Geometry, t *testing.T) {
 	if g1 == nil && g2 == nil {
 		return
