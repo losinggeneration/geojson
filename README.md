@@ -1,11 +1,18 @@
-## GeoJSON implementation in Go
+geojson
+=======
+
+[![GoDoc](https://godoc.org/github.com/losinggeneration/geojson?status.png)](https://godoc.org/github.com/losinggeneration/geojson)
+
+GeoJSON is an MIT licensed Go library that implements the GeoJSON 1.0 spec.
+
+### About
 
 This library should make it straight forward to Marshal & Unmarshal GeoJSON
 objects in Go. This library will take care of a bit of some of the work to
 ensure, for example, the Type is properly set for GeoJSON Objects as defined
 in the spec.
 
-## Example
+### Example
 
 	GeoJSON{
 		Feature: &Feature{
@@ -37,6 +44,6 @@ would marshal into the following JSON:
       }
     }
 
-## TODO
+### TODO
 
 * Tests for all each struct's to marshal & unmarshal to the spec
