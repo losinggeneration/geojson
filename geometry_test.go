@@ -2,6 +2,7 @@ package geojson
 
 import (
 	"encoding/json"
+	"reflect"
 	"testing"
 )
 
@@ -10,9 +11,9 @@ func equalGeometries(g1, g2 *Geometry, t *testing.T) {
 	if g1 == nil && g2 == nil {
 		return
 	} else if g1 != nil && g2 == nil {
-		t.Errorf("expected Geometry %v but got nil", g1)
+		t.Errorf("expected Geometry %#v but got nil", g1)
 	} else if g1 == nil && g2 != nil {
-		t.Errorf("expected Geometry nil but got %v", g2)
+		t.Errorf("expected Geometry nil but got %#v", g2)
 	}
 
 	if g1.Type != g2.Type {
@@ -20,45 +21,70 @@ func equalGeometries(g1, g2 *Geometry, t *testing.T) {
 	}
 
 	if g1.Point != nil && g2.Point == nil {
-		t.Errorf("expected Point %v but got nil", g1.Point)
+		t.Errorf("expected Point %#v but got nil", g1.Point)
 	} else if g1.Point == nil && g2.Point != nil {
-		t.Errorf("expected Point nil but got %v", g2.Point)
+		t.Errorf("expected Point nil but got %#v", g2.Point)
+	} else if !reflect.DeepEqual(g1.Point, g2.Point) {
+		t.Errorf("expected Point %#v but got %#v", g1.Point, g2.Point)
 	}
 
 	if g1.MultiPoint != nil && g2.MultiPoint == nil {
-		t.Errorf("expected MultiPoint %v but got nil", g1.MultiPoint)
+		t.Errorf("expected MultiPoint %#v but got nil", g1.MultiPoint)
 	} else if g1.MultiPoint == nil && g2.MultiPoint != nil {
-		t.Errorf("expected MultiPoint nil but got %v", g2.MultiPoint)
+		t.Errorf("expected MultiPoint nil but got %#v", g2.MultiPoint)
+	} else if !reflect.DeepEqual(g1.MultiPoint, g2.MultiPoint) {
+		t.Errorf("expected MultiPoint %#v but got %#v", g1.MultiPoint, g2.MultiPoint)
 	}
 
 	if g1.LineString != nil && g2.LineString == nil {
-		t.Errorf("expected LineString %v but got nil", g1.LineString)
+		t.Errorf("expected LineString %#v but got nil", g1.LineString)
 	} else if g1.LineString == nil && g2.LineString != nil {
-		t.Errorf("expected LineString nil but got %v", g2.LineString)
+		t.Errorf("expected LineString nil but got %#v", g2.LineString)
+	} else if !reflect.DeepEqual(g1.LineString, g2.LineString) {
+		t.Errorf("expected LineString %#v but got %#v", g1.LineString, g2.LineString)
 	}
 
 	if g1.MultiLineString != nil && g2.MultiLineString == nil {
-		t.Errorf("expected MultiLineString %v but got nil", g1.MultiLineString)
+		t.Errorf("expected MultiLineString %#v but got nil", g1.MultiLineString)
 	} else if g1.MultiLineString == nil && g2.MultiLineString != nil {
-		t.Errorf("expected MultiLineString nil but got %v", g2.MultiLineString)
+		t.Errorf("expected MultiLineString nil but got %#v", g2.MultiLineString)
+	} else if !reflect.DeepEqual(g1.MultiLineString, g2.MultiLineString) {
+		t.Errorf("expected MultiLineString %#v but got %#v", g1.MultiLineString, g2.MultiLineString)
 	}
 
 	if g1.Polygon != nil && g2.Polygon == nil {
-		t.Errorf("expected Polygon %v but got nil", g1.Polygon)
+		t.Errorf("expected Polygon %#v but got nil", g1.Polygon)
 	} else if g1.Polygon == nil && g2.Polygon != nil {
-		t.Errorf("expected Polygon nil but got %v", g2.Polygon)
+		t.Errorf("expected Polygon nil but got %#v", g2.Polygon)
+	} else if !reflect.DeepEqual(g1.Polygon, g2.Polygon) {
+		t.Errorf("expected Polygon %#v but got %#v", g1.Polygon, g2.Polygon)
 	}
 
 	if g1.MultiPolygon != nil && g2.MultiPolygon == nil {
-		t.Errorf("expected MultiPolygon %v but got nil", g1.MultiPolygon)
+		t.Errorf("expected MultiPolygon %#v but got nil", g1.MultiPolygon)
 	} else if g1.MultiPolygon == nil && g2.MultiPolygon != nil {
-		t.Errorf("expected MultiPolygon nil but got %v", g2.MultiPolygon)
+		t.Errorf("expected MultiPolygon nil but got %#v", g2.MultiPolygon)
+	} else if !reflect.DeepEqual(g1.MultiPolygon, g2.MultiPolygon) {
+		t.Errorf("expected MultiPolygon %#v but got %#v", g1.MultiPolygon, g2.MultiPolygon)
 	}
 
 	if g1.GeometryCollection != nil && g2.GeometryCollection == nil {
-		t.Errorf("expected GeometryCollection %v but got nil", g1.GeometryCollection)
+		t.Errorf("expected GeometryCollection %#v but got nil", g1.GeometryCollection)
 	} else if g1.GeometryCollection == nil && g2.GeometryCollection != nil {
-		t.Errorf("expected GeometryCollection nil but got %v", g2.GeometryCollection)
+		t.Errorf("expected GeometryCollection nil but got %#v", g2.GeometryCollection)
+	} else if g1.GeometryCollection != nil && g2.GeometryCollection != nil {
+		if g1.GeometryCollection.Type != g2.GeometryCollection.Type {
+			t.Errorf("expected GeometryCollection.Type %q but got %q", g1.GeometryCollection.Type, g2.GeometryCollection.Type)
+		}
+
+		if len(g1.GeometryCollection.Geometries) == len(g2.GeometryCollection.Geometries) {
+			for i := range g1.GeometryCollection.Geometries {
+				equalGeometries(&g1.GeometryCollection.Geometries[i], &g2.GeometryCollection.Geometries[i], t)
+			}
+		} else {
+			t.Errorf("expected GeometryCollection.Length %v but got %v", len(g1.GeometryCollection.Geometries) == len(g2.GeometryCollection.Geometries))
+		}
+
 	}
 }
 
@@ -342,13 +368,16 @@ func TestGeometryMarshalJSON(t *testing.T) {
 	}
 }
 
-func TestGeometryUnmarshalJSOR(t *testing.T) {
+func TestGeometryUnmarshalJSON(t *testing.T) {
 	// Success on type Point
 	expected := Geometry{
 		Object: Object{
 			Type: "Point",
 		},
 		Point: &Point{
+			Object: Object{
+				Type: "Point",
+			},
 			Coordinates: Coordinate{1.1, 10},
 		},
 	}
@@ -366,6 +395,9 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 			Type: "MultiPoint",
 		},
 		MultiPoint: &MultiPoint{
+			Object: Object{
+				Type: "MultiPoint",
+			},
 			Coordinates: Coordinates{{1.1, 10}, {2.2, 20}},
 		},
 	}
@@ -383,6 +415,9 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 			Type: "LineString",
 		},
 		LineString: &LineString{
+			Object: Object{
+				Type: "LineString",
+			},
 			Coordinates: Coordinates{{1.1, 10}, {2.2, 20}},
 		},
 	}
@@ -400,6 +435,9 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 			Type: "MultiLineString",
 		},
 		MultiLineString: &MultiLineString{
+			Object: Object{
+				Type: "MultiLineString",
+			},
 			Coordinates: []Coordinates{
 				{{1.1, 10}, {2.2, 20}},
 				{{3.3, 30}, {4.4, 40}},
@@ -420,6 +458,9 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 			Type: "Polygon",
 		},
 		Polygon: &Polygon{
+			Object: Object{
+				Type: "Polygon",
+			},
 			Coordinates: []Coordinates{
 				{{1.1, 10}, {2.2, 20}},
 				{{3.3, 30}, {4.4, 40}},
@@ -440,6 +481,9 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 			Type: "MultiPolygon",
 		},
 		MultiPolygon: &MultiPolygon{
+			Object: Object{
+				Type: "MultiPolygon",
+			},
 			Coordinates: [][]Coordinates{
 				{
 					{{1.1, 10}, {2.2, 20}},
@@ -469,17 +513,38 @@ func TestGeometryUnmarshalJSOR(t *testing.T) {
 			Type: "GeometryCollection",
 		},
 		GeometryCollection: &GeometryCollection{
+			Object: Object{
+				Type: "GeometryCollection",
+			},
 			Geometries: []Geometry{
 				{
+					Object: Object{
+						Type: "Point",
+					},
 					Point: &Point{
+						Object: Object{
+							Type: "Point",
+						},
 						Coordinates: Coordinate{1.1, 10},
 					},
 				}, {
+					Object: Object{
+						Type: "LineString",
+					},
 					LineString: &LineString{
+						Object: Object{
+							Type: "LineString",
+						},
 						Coordinates: Coordinates{{1.1, 10}, {2.2, 20}},
 					},
 				}, {
+					Object: Object{
+						Type: "Polygon",
+					},
 					Polygon: &Polygon{
+						Object: Object{
+							Type: "Polygon",
+						},
 						Coordinates: []Coordinates{
 							{{1.1, 10}, {2.2, 20}},
 							{{3.3, 30}, {4.4, 40}},

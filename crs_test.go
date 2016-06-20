@@ -2,8 +2,21 @@ package geojson
 
 import (
 	"encoding/json"
+	"reflect"
 	"testing"
 )
+
+func equalCRS(c1, c2 *CRS, t *testing.T) {
+	if c1 == nil && c2 == nil {
+		return
+	} else if c1 != nil && c2 == nil {
+		t.Errorf("expected CRS %#v but got nil", c1)
+	} else if c1 == nil && c2 != nil {
+		t.Errorf("expected CRS nil but got %#v", c2)
+	} else if !reflect.DeepEqual(c1, c2) {
+		t.Errorf("expected CRS %#v but got %#v", c1, c2)
+	}
+}
 
 func TestCRSsetProperty(t *testing.T) {
 	// Success for type name
@@ -113,15 +126,15 @@ func TestCRSUnmarshalJSON(t *testing.T) {
 		}
 
 		if c1.Name != nil && c2.Name == nil {
-			t.Errorf("expected Name %v but got nit", c1.Name)
+			t.Errorf("expected Name %#v but got nit", c1.Name)
 		} else if c1.Name == nil && c2.Name != nil {
-			t.Errorf("expected Name nil but got %v", c2.Name)
+			t.Errorf("expected Name nil but got %#v", c2.Name)
 		}
 
 		if c1.Link != nil && c2.Link == nil {
-			t.Errorf("expected Link %v but got nil", c1.Link)
+			t.Errorf("expected Link %#v but got nil", c1.Link)
 		} else if c1.Link == nil && c2.Link != nil {
-			t.Errorf("expected Link nil but got %v", c2.Link)
+			t.Errorf("expected Link nil but got %#v", c2.Link)
 		}
 	}
 

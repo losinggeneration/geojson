@@ -18,6 +18,15 @@ func equalGeoJSON(g1, g2 GeoJSON, t *testing.T) {
 	equalFeatureCollections(g1.FeatureCollection, g2.FeatureCollection, t)
 }
 
+func equalObject(o1, o2 Object, t *testing.T) {
+	if o1.Type != o2.Type {
+		t.Errorf("expected Type %q but got %q", o1.Type, o2.Type)
+	}
+
+	equalBoundingBox(o1.BoundingBox, o2.BoundingBox, t)
+	equalCRS(o1.CRS, o2.CRS, t)
+}
+
 func TestMarshalRealGeoJSON(t *testing.T) {
 	// test successful Feature
 	o := Object{
@@ -29,12 +38,18 @@ func TestMarshalRealGeoJSON(t *testing.T) {
 		Feature: &Feature{
 			Object: o,
 			Geometry: &Geometry{
+				Object: Object{
+					Type: "Point",
+				},
 				Point: &Point{
+					Object: Object{
+						Type: "Point",
+					},
 					Coordinates: Coordinate{125.6, 10.1},
 				},
 			},
 			Properties: map[string]interface{}{
-				"name": "Dinagat Islands",
+				"name": "DinagatIslands",
 			},
 		},
 	}
@@ -46,7 +61,7 @@ func TestMarshalRealGeoJSON(t *testing.T) {
 				"coordinates": [125.6, 10.1]
 			},
 			"properties": {
-				"name": "Dinagat Islands"
+				"name": "DinagatIslands"
 			}
 		}`, ""))
 
@@ -70,12 +85,18 @@ func TestMarshalRealGeoJSON(t *testing.T) {
 					Type: "Feature",
 				},
 				Geometry: &Geometry{
+					Object: Object{
+						Type: "Point",
+					},
 					Point: &Point{
+						Object: Object{
+							Type: "Point",
+						},
 						Coordinates: Coordinate{125.6, 10.1},
 					},
 				},
 				Properties: map[string]interface{}{
-					"name": "Dinagat Islands",
+					"name": "DinagatIslands",
 				},
 			}},
 		},
@@ -90,7 +111,7 @@ func TestMarshalRealGeoJSON(t *testing.T) {
 					"coordinates": [125.6, 10.1]
 				},
 				"properties": {
-					"name": "Dinagat Islands"
+					"name": "DinagatIslands"
 				}
 			}]
 		}`, ""))
@@ -109,7 +130,13 @@ func TestMarshalRealGeoJSON(t *testing.T) {
 	g = GeoJSON{
 		Object: o,
 		Geometry: &Geometry{
+			Object: Object{
+				Type: "Point",
+			},
 			Point: &Point{
+				Object: Object{
+					Type: "Point",
+				},
 				Coordinates: Coordinate{125.6, 10.1},
 			},
 		},
@@ -146,12 +173,18 @@ func TestUnmarshalRealGeoJSON(t *testing.T) {
 		Feature: &Feature{
 			Object: o,
 			Geometry: &Geometry{
+				Object: Object{
+					Type: "Point",
+				},
 				Point: &Point{
+					Object: Object{
+						Type: "Point",
+					},
 					Coordinates: Coordinate{125.6, 10.1},
 				},
 			},
 			Properties: map[string]interface{}{
-				"name": "Dinagat Islands",
+				"name": "DinagatIslands",
 			},
 		},
 	}
@@ -163,7 +196,7 @@ func TestUnmarshalRealGeoJSON(t *testing.T) {
 				"coordinates": [125.6, 10.1]
 			},
 			"properties": {
-				"name": "Dinagat Islands"
+				"name": "DinagatIslands"
 			}
 		}`)
 
@@ -216,12 +249,18 @@ func TestUnmarshalRealGeoJSON(t *testing.T) {
 					Type: "Feature",
 				},
 				Geometry: &Geometry{
+					Object: Object{
+						Type: "Point",
+					},
 					Point: &Point{
+						Object: Object{
+							Type: "Point",
+						},
 						Coordinates: Coordinate{125.6, 10.1},
 					},
 				},
 				Properties: map[string]interface{}{
-					"name": "Dinagat Islands",
+					"name": "DinagatIslands",
 				},
 			}},
 		},
@@ -236,7 +275,7 @@ func TestUnmarshalRealGeoJSON(t *testing.T) {
 					"coordinates": [125.6, 10.1]
 				},
 				"properties": {
-					"name": "Dinagat Islands"
+					"name": "DinagatIslands"
 				}
 			}]
 		}`, ""))
