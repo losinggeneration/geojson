@@ -214,7 +214,7 @@ func TestGeometryMarshalJSON(t *testing.T) {
 	// Success on type Point
 	g := Geometry{
 		Point: &Point{
-			Coordinates: Coordinate{1.1, 10},
+			Coordinates: Position{1.1, 10},
 		},
 	}
 	expected := r.ReplaceAllString(`{"type":"Point", "coordinates": [1.1, 10]}`, "")
@@ -227,7 +227,7 @@ func TestGeometryMarshalJSON(t *testing.T) {
 	// Success on type MultiPoint
 	g = Geometry{
 		MultiPoint: &MultiPoint{
-			Coordinates: Coordinates{{1.1, 10}, {2.2, 20}},
+			Coordinates: Positions{{1.1, 10}, {2.2, 20}},
 		},
 	}
 	expected = r.ReplaceAllString(`{"type":"MultiPoint", "coordinates": [[1.1, 10], [2.2, 20]]}`, "")
@@ -240,7 +240,7 @@ func TestGeometryMarshalJSON(t *testing.T) {
 	// Success on type LineString
 	g = Geometry{
 		LineString: &LineString{
-			Coordinates: Coordinates{{1.1, 10}, {2.2, 20}},
+			Coordinates: Positions{{1.1, 10}, {2.2, 20}},
 		},
 	}
 	expected = r.ReplaceAllString(`{"type":"LineString", "coordinates": [[1.1, 10], [2.2, 20]]}`, "")
@@ -253,7 +253,7 @@ func TestGeometryMarshalJSON(t *testing.T) {
 	// Success on type MultiLineString
 	g = Geometry{
 		MultiLineString: &MultiLineString{
-			Coordinates: []Coordinates{
+			Coordinates: []Positions{
 				{{1.1, 10}, {2.2, 20}},
 				{{3.3, 30}, {4.4, 40}},
 			},
@@ -269,7 +269,7 @@ func TestGeometryMarshalJSON(t *testing.T) {
 	// Success on type Polygon
 	g = Geometry{
 		Polygon: &Polygon{
-			Coordinates: []Coordinates{
+			Coordinates: []Positions{
 				{{1.1, 10}, {2.2, 20}},
 				{{3.3, 30}, {4.4, 40}},
 			},
@@ -285,7 +285,7 @@ func TestGeometryMarshalJSON(t *testing.T) {
 	// Success on type MultiPolygon
 	g = Geometry{
 		MultiPolygon: &MultiPolygon{
-			Coordinates: [][]Coordinates{
+			Coordinates: [][]Positions{
 				{
 					{{1.1, 10}, {2.2, 20}},
 					{{3.3, 30}, {4.4, 40}},
@@ -313,15 +313,15 @@ func TestGeometryMarshalJSON(t *testing.T) {
 			Geometries: []Geometry{
 				{
 					Point: &Point{
-						Coordinates: Coordinate{1.1, 10},
+						Coordinates: Position{1.1, 10},
 					},
 				}, {
 					LineString: &LineString{
-						Coordinates: Coordinates{{1.1, 10}, {2.2, 20}},
+						Coordinates: Positions{{1.1, 10}, {2.2, 20}},
 					},
 				}, {
 					Polygon: &Polygon{
-						Coordinates: []Coordinates{
+						Coordinates: []Positions{
 							{{1.1, 10}, {2.2, 20}},
 							{{3.3, 30}, {4.4, 40}},
 						},
@@ -354,10 +354,10 @@ func TestGeometryMarshalJSON(t *testing.T) {
 	// Fail with multiple geometries
 	g = Geometry{
 		Point: &Point{
-			Coordinates: Coordinate{1.1, 10},
+			Coordinates: Position{1.1, 10},
 		},
 		LineString: &LineString{
-			Coordinates: Coordinates{{1.1, 10}, {2.2, 20}},
+			Coordinates: Positions{{1.1, 10}, {2.2, 20}},
 		},
 	}
 	if b, err := g.MarshalJSON(); err != ErrMultipleGeometries {
@@ -377,7 +377,7 @@ func TestGeometryUnmarshalJSON(t *testing.T) {
 			Object: Object{
 				Type: "Point",
 			},
-			Coordinates: Coordinate{1.1, 10},
+			Coordinates: Position{1.1, 10},
 		},
 	}
 	b := []byte(`{"type":"Point", "coordinates": [1.1, 10]}`)
@@ -397,7 +397,7 @@ func TestGeometryUnmarshalJSON(t *testing.T) {
 			Object: Object{
 				Type: "MultiPoint",
 			},
-			Coordinates: Coordinates{{1.1, 10}, {2.2, 20}},
+			Coordinates: Positions{{1.1, 10}, {2.2, 20}},
 		},
 	}
 	b = []byte(`{"type":"MultiPoint", "coordinates": [[1.1, 10], [2.2, 20]]}`)
@@ -417,7 +417,7 @@ func TestGeometryUnmarshalJSON(t *testing.T) {
 			Object: Object{
 				Type: "LineString",
 			},
-			Coordinates: Coordinates{{1.1, 10}, {2.2, 20}},
+			Coordinates: Positions{{1.1, 10}, {2.2, 20}},
 		},
 	}
 	b = []byte(`{"type":"LineString", "coordinates": [[1.1, 10], [2.2, 20]]}`)
@@ -437,7 +437,7 @@ func TestGeometryUnmarshalJSON(t *testing.T) {
 			Object: Object{
 				Type: "MultiLineString",
 			},
-			Coordinates: []Coordinates{
+			Coordinates: []Positions{
 				{{1.1, 10}, {2.2, 20}},
 				{{3.3, 30}, {4.4, 40}},
 			},
@@ -460,7 +460,7 @@ func TestGeometryUnmarshalJSON(t *testing.T) {
 			Object: Object{
 				Type: "Polygon",
 			},
-			Coordinates: []Coordinates{
+			Coordinates: []Positions{
 				{{1.1, 10}, {2.2, 20}},
 				{{3.3, 30}, {4.4, 40}},
 			},
@@ -483,7 +483,7 @@ func TestGeometryUnmarshalJSON(t *testing.T) {
 			Object: Object{
 				Type: "MultiPolygon",
 			},
-			Coordinates: [][]Coordinates{
+			Coordinates: [][]Positions{
 				{
 					{{1.1, 10}, {2.2, 20}},
 					{{3.3, 30}, {4.4, 40}},
@@ -524,7 +524,7 @@ func TestGeometryUnmarshalJSON(t *testing.T) {
 						Object: Object{
 							Type: "Point",
 						},
-						Coordinates: Coordinate{1.1, 10},
+						Coordinates: Position{1.1, 10},
 					},
 				}, {
 					Object: Object{
@@ -534,7 +534,7 @@ func TestGeometryUnmarshalJSON(t *testing.T) {
 						Object: Object{
 							Type: "LineString",
 						},
-						Coordinates: Coordinates{{1.1, 10}, {2.2, 20}},
+						Coordinates: Positions{{1.1, 10}, {2.2, 20}},
 					},
 				}, {
 					Object: Object{
@@ -544,7 +544,7 @@ func TestGeometryUnmarshalJSON(t *testing.T) {
 						Object: Object{
 							Type: "Polygon",
 						},
-						Coordinates: []Coordinates{
+						Coordinates: []Positions{
 							{{1.1, 10}, {2.2, 20}},
 							{{3.3, 30}, {4.4, 40}},
 						},

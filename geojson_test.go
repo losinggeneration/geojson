@@ -45,7 +45,7 @@ func TestMarshalRealGeoJSON(t *testing.T) {
 					Object: Object{
 						Type: "Point",
 					},
-					Coordinates: Coordinate{125.6, 10.1},
+					Coordinates: Position{125.6, 10.1},
 				},
 			},
 			Properties: map[string]interface{}{
@@ -92,7 +92,7 @@ func TestMarshalRealGeoJSON(t *testing.T) {
 						Object: Object{
 							Type: "Point",
 						},
-						Coordinates: Coordinate{125.6, 10.1},
+						Coordinates: Position{125.6, 10.1},
 					},
 				},
 				Properties: map[string]interface{}{
@@ -137,7 +137,7 @@ func TestMarshalRealGeoJSON(t *testing.T) {
 				Object: Object{
 					Type: "Point",
 				},
-				Coordinates: Coordinate{125.6, 10.1},
+				Coordinates: Position{125.6, 10.1},
 			},
 		},
 	}
@@ -180,7 +180,7 @@ func TestUnmarshalRealGeoJSON(t *testing.T) {
 					Object: Object{
 						Type: "Point",
 					},
-					Coordinates: Coordinate{125.6, 10.1},
+					Coordinates: Position{125.6, 10.1},
 				},
 			},
 			Properties: map[string]interface{}{
@@ -218,7 +218,7 @@ func TestUnmarshalRealGeoJSON(t *testing.T) {
 			Object: o,
 			Point: &Point{
 				Object:      o,
-				Coordinates: Coordinate{125.6, 10.1},
+				Coordinates: Position{125.6, 10.1},
 			},
 		},
 	}
@@ -256,7 +256,7 @@ func TestUnmarshalRealGeoJSON(t *testing.T) {
 						Object: Object{
 							Type: "Point",
 						},
-						Coordinates: Coordinate{125.6, 10.1},
+						Coordinates: Position{125.6, 10.1},
 					},
 				},
 				Properties: map[string]interface{}{
@@ -360,7 +360,7 @@ func TestGeoJSONSpecExampleMarshal(t *testing.T) {
 			Features: []Feature{{
 				Geometry: &Geometry{
 					Point: &Point{
-						Coordinates: Coordinate{102, 0.5},
+						Coordinates: Position{102, 0.5},
 					},
 				},
 				Properties: Properties{
@@ -369,7 +369,7 @@ func TestGeoJSONSpecExampleMarshal(t *testing.T) {
 			}, {
 				Geometry: &Geometry{
 					LineString: &LineString{
-						Coordinates: Coordinates{
+						Coordinates: Positions{
 							{102.0, 0.0},
 							{103.0, 1.0},
 							{104.0, 0.0},
@@ -384,7 +384,7 @@ func TestGeoJSONSpecExampleMarshal(t *testing.T) {
 			}, {
 				Geometry: &Geometry{
 					Polygon: &Polygon{
-						Coordinates: []Coordinates{{
+						Coordinates: []Positions{{
 							{100.0, 0.0},
 							{101.0, 0.0},
 							{101.0, 1.0},
@@ -481,7 +481,7 @@ func TestGeoJSONSpecExampleUnmashal(t *testing.T) {
 						Object: Object{
 							Type: "Point",
 						},
-						Coordinates: Coordinate{102, 0.5},
+						Coordinates: Position{102, 0.5},
 					},
 				},
 				Properties: Properties{
@@ -499,7 +499,7 @@ func TestGeoJSONSpecExampleUnmashal(t *testing.T) {
 						Object: Object{
 							Type: "LineString",
 						},
-						Coordinates: Coordinates{
+						Coordinates: Positions{
 							{102.0, 0.0},
 							{103.0, 1.0},
 							{104.0, 0.0},
@@ -523,7 +523,7 @@ func TestGeoJSONSpecExampleUnmashal(t *testing.T) {
 						Object: Object{
 							Type: "Polygon",
 						},
-						Coordinates: []Coordinates{{
+						Coordinates: []Positions{{
 							{100.0, 0.0},
 							{101.0, 0.0},
 							{101.0, 1.0},

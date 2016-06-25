@@ -17,20 +17,20 @@ var (
 	ErrInvalidGeometry = errors.New("invalid geometry specified")
 )
 
-// Coordinate is single GeoJSON position. It's the building block for multi-position
-// types. Coordinates should be specified in an x, y, z ordering. This would be:
-// [longitude, latitude, altitude] for a geographic coordinate.
-type Coordinate []float64
+// Position is single GeoJSON position. It's the building block for multi-position
+// types. Positions should be specified in an x, y, z ordering. This would be:
+// [longitude, latitude, altitude] for a geographic position.
+type Position []float64
 
-// Coordinates specifies an array of Coordinate types
-type Coordinates []Coordinate
+// Positions specifies an array of Position types
+type Positions []Position
 
 // Point is a specific GeoJSON point object
 type Point struct {
 	// Object is the common GeoJSON object properties
 	Object
 	// Coordinates is the position of the Point
-	Coordinates Coordinate `json:"coordinates"`
+	Coordinates Position `json:"coordinates"`
 }
 
 // MultiPoint is a group of GeoJSON point objects
@@ -38,7 +38,7 @@ type MultiPoint struct {
 	// Object is the common GeoJSON object properties
 	Object
 	// Coordinates are the multiple positions
-	Coordinates Coordinates `json:"coordinates"`
+	Coordinates Positions `json:"coordinates"`
 }
 
 // LineString is a GeoJSON object that is a group of positions that make a line
@@ -46,8 +46,8 @@ type LineString struct {
 	// Object is the common GeoJSON object properties
 	Object
 	// Coordinates are the multiple positions that make up a Line
-	// Coordinates length must be >= 2
-	Coordinates Coordinates `json:"coordinates"`
+	// Positions length must be >= 2
+	Coordinates Positions `json:"coordinates"`
 }
 
 // MultiLineString is a GeoJSON object that is a group of positions that make
@@ -56,7 +56,7 @@ type MultiLineString struct {
 	// Object is the common GeoJSON object properties
 	Object
 	// Coordinates are multiple lines of multiple positions
-	Coordinates []Coordinates `json:"coordinates"`
+	Coordinates []Positions `json:"coordinates"`
 }
 
 // Polygon is a so called LineRing which is a closed LineString of 4 or more
@@ -67,15 +67,15 @@ type Polygon struct {
 	Object
 	// Coordinates are multiple closed LineStrings of 4 or more positions.
 	// Multiple rings may be specified, but the first must be an exterior
-	Coordinates []Coordinates `json:"coordinates"`
+	Coordinates []Positions `json:"coordinates"`
 }
 
 // MultiPolygon represents a GeoJSON object of multiple Polygons
 type MultiPolygon struct {
 	// Object is the common GeoJSON object properties
 	Object
-	// Coordinates are defined by multiple Polygon coordinates
-	Coordinates [][]Coordinates `json:"coordinates"`
+	// Coordinates are defined by multiple Polygon positions
+	Coordinates [][]Positions `json:"coordinates"`
 }
 
 // GeometryCollection is a set of Geometry objects grouped together

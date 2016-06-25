@@ -19,7 +19,7 @@ in the spec.
 			ID: "MyFeature",
 			Geometry: &Geometry{
 				Point: &Point{
-					Coordinates: Coordinate{10, 10},
+					Coordinates: Positions{10, 10},
 				},
 			},
 			Properties: Properties{

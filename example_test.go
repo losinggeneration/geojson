@@ -14,7 +14,7 @@ func Example() {
 			ID: "MyFeature",
 			Geometry: &geojson.Geometry{
 				Point: &geojson.Point{
-					Coordinates: geojson.Coordinate{10, 10},
+					Coordinates: geojson.Position{10, 10},
 				},
 			},
 			Properties: geojson.Properties{
