@@ -81,7 +81,7 @@ func equalGeometries(g1, g2 *Geometry, t *testing.T) {
 				equalGeometries(&g1.GeometryCollection.Geometries[i], &g2.GeometryCollection.Geometries[i], t)
 			}
 		} else {
-			t.Errorf("expected GeometryCollection.Length %v but got %v", len(g1.GeometryCollection.Geometries) == len(g2.GeometryCollection.Geometries))
+			t.Errorf("expected GeometryCollection.Length %v but got %v", len(g1.GeometryCollection.Geometries), len(g2.GeometryCollection.Geometries))
 		}
 
 	}
