@@ -2,6 +2,7 @@ geojson
 =======
 
 [![wercker status](https://app.wercker.com/status/f88b804269b197c17ad2ed5894e0c715/s "wercker status")](https://app.wercker.com/project/bykey/f88b804269b197c17ad2ed5894e0c715)
+[![Coverage Status](https://coveralls.io/repos/github/losinggeneration/geojson/badge.svg?branch=master)](https://coveralls.io/github/losinggeneration/geojson?branch=master)
 [![GoDoc](https://godoc.org/github.com/losinggeneration/geojson?status.png)](https://godoc.org/github.com/losinggeneration/geojson)
 
 GeoJSON is an MIT licensed Go library that implements the GeoJSON 1.0 spec.
