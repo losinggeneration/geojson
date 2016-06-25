@@ -42,4 +42,10 @@ build:
     - script:
         name: go test
         code: |
-          go test ./...
+          go test -covermode=count -coverprofile=coverage.out ./...
+
+    - script:
+        name: Send Coveralls coverage
+        code: |
+          go get github.com/mattn/goveralls
+          goveralls -package="./..." -coverprofile=coverage.out -service="wercker.com" -repotoken="$COVERALLS_TOKEN"
