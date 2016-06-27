@@ -6,14 +6,14 @@ geojson
 [![GoDoc](https://godoc.org/github.com/losinggeneration/geojson?status.png)](https://godoc.org/github.com/losinggeneration/geojson)
 [![MIT license](https://img.shields.io/badge/license-MIT-orange.svg?style=flat)](https://github.com/losinggeneration/geojson/blob/master/COPYING)
 
-GeoJSON is an MIT licensed Go library that implements the GeoJSON 1.0 spec.
+GeoJSON is a Go library that implements the GeoJSON 1.0 spec.
 
 ### About
 
 This library should make it straight forward to Marshal & Unmarshal GeoJSON
-objects in Go. This library will take care of a bit of some of the work to
-ensure, for example, the Type is properly set for GeoJSON Objects as defined
-in the spec.
+objects in Go. For example, this library will try to keep the Type properly
+set for GeoJSON Objects as defined in the spec during JSON Marshalling. In
+other words, a user doesn't need to explicitly set the Typet field.
 
 ### Example
 
